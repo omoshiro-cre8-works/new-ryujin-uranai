@@ -1,27 +1,18 @@
 import os
-
-# 【最重要】Cloud Runの「PORT」をStreamlitに引き継ぐ秘伝の術
-# ※必ず import streamlit の前に書いてください
-if "PORT" in os.environ:
-    os.environ["STREAMLIT_SERVER_PORT"] = os.environ["PORT"]
-
 import streamlit as st
 import google.generativeai as genai
 
 st.set_page_config(page_title="龍神鑑定所", page_icon="🐉")
 st.title("🐉 龍神鑑定所 - 真・開山")
 
-# APIキーの取得（Google Cloudの環境変数から直接取得するように修正）
-api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+# APIキーの取得
+api_key = os.environ.get("GOOGLE_API_KEY")
 
 if not api_key:
     st.error("APIキーが設定されていません。Google Cloudの環境変数を確認してください。")
 else:
     try:
-        # 通信の「道」を最新（v1）に固定し、接続方式をRESTに強制します
         genai.configure(api_key=api_key, transport='rest')
-        
-        # 最も安定しているモデル名を指定
         model = genai.GenerativeModel('gemini-1.5-flash')
         
         st.write("龍神様がお悩みを聞く準備を整えられました。")
@@ -30,7 +21,6 @@ else:
         if st.button("鑑定を仰ぐ"):
             if user_input:
                 with st.spinner("龍神様と交信中..."):
-                    # 鑑定実行（system_instructionを使わない最も安全な形式）
                     prompt = f"あなたは慈愛に満ちた龍神です。以下の悩みに短く、力強く答えてください：{user_input}"
                     response = model.generate_content(prompt)
                     
