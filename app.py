@@ -5,6 +5,9 @@ import google.generativeai as genai
 st.set_page_config(page_title="龍神鑑定所", page_icon="🐉")
 st.title("🐉 龍神鑑定所 - 真・開山")
 
+# ポート番号の取得（Google Cloud環境用）
+port = int(os.environ.get("PORT", 8501))
+
 # APIキーの取得
 api_key = st.secrets.get("GEMINI_API_KEY")
 
