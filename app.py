@@ -13,7 +13,9 @@ if not api_key:
 else:
     try:
         genai.configure(api_key=api_key, transport='rest')
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # 【修正箇所】引退した1.5から、現在稼働中の最新モデル「gemini-2.5-flash」に変更
+        model = genai.GenerativeModel('gemini-2.5-flash')
         
         st.write("龍神様がお悩みを聞く準備を整えられました。")
         user_input = st.text_input("今、心にあるお悩みを一行で記してください。")
